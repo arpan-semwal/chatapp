@@ -1,28 +1,47 @@
-import { useState } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore"; 
+import { useEffect, useState } from "react";
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp ,where } from "firebase/firestore"; 
 import {auth, db } from "../firebase";
 
 export const Chat = (props) => {
     const {room} = props;
     const [newMessage , setNewMessage] = useState("");
-    const messagesRef = collection(db , "messages")
+    const [messages , setMessages] = useState([]);
+    const messagesRef = collection(db , "messages");
 
 
-const handleSubmit = async(e) => {
-    e.preventDefault();
-    if(newMessage ==="") return;
-    if(!room){
-        console.log("error:room is not defined");
-        return;
-    }
+    useEffect(() => {
+        const queryMessages = query(messagesRef,
+         where("room" , "==" , room) ,
+         orderBy("createdAt")
+         
+         );
+        const unsuscribe = onSnapshot(queryMessages , (Snapshot) => {
+            let messages = [];
+            Snapshot.forEach((doc) => {
+                messages.push({...doc.data() , id:doc.id});
+            });
+            setMessages(messages);
+        });
 
-    await addDoc(messagesRef , {
-        text:newMessage,
-        createdAt:serverTimestamp(),
-        user:auth.currentUser.displayName,
-        room,
-    });
-    setNewMessage("");
+        return () => unsuscribe();
+    },[]);
+
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        if(newMessage ==="") return;
+        if(!room){
+            console.log("error:room is not defined");
+            return;
+        }
+
+        await addDoc(messagesRef , {
+            text:newMessage,
+            createdAt:serverTimestamp(),
+            user:auth.currentUser.displayName,
+            room,
+        });
+        setNewMessage("");
 
 
 };
@@ -31,6 +50,19 @@ const handleSubmit = async(e) => {
 
     return(
         <div className="chat-app">
+            <div className="header">
+                <h1>Welcome to : {room.toUpperCase()}</h1>
+            </div>
+            <div className="messages">
+                {messages.map((message) => (
+
+               <div className="message" key={message.id}>
+                <span className="user">{message.user}</span>
+                {message.text}
+               </div>
+                
+                ))}
+                </div>
         <form onSubmit = {handleSubmit} className="new-messgae-form">
         <input className="new-message-input" 
         placeholder="type your message...."

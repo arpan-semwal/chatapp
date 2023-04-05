@@ -3,6 +3,7 @@ import { useState  ,useRef} from 'react';
 import './App.css';
 import { Auth } from './components/Auth';
 import { Chat } from './components/Chat';
+import "./styles/Chat.css"
 const cookies = new Cookies();
 
 
