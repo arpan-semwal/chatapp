@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp ,where } from "firebase/firestore"; 
 import {auth, db } from "../firebase";
+import '../styles/Chat.css';
 
 export const Chat = (props) => {
     const {room} = props;
@@ -13,7 +14,7 @@ export const Chat = (props) => {
         const queryMessages = query(messagesRef,
          where("room" , "==" , room) ,
          orderBy("createdAt")
-         
+
          );
         const unsuscribe = onSnapshot(queryMessages , (Snapshot) => {
             let messages = [];
@@ -24,7 +25,7 @@ export const Chat = (props) => {
         });
 
         return () => unsuscribe();
-    },[]);
+    },);
 
 
     const handleSubmit = async(e) => {
@@ -62,7 +63,7 @@ export const Chat = (props) => {
                </div>
                 
                 ))}
-                </div>
+            </div>
         <form onSubmit = {handleSubmit} className="new-messgae-form">
         <input className="new-message-input" 
         placeholder="type your message...."

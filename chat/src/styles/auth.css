@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+}
+
+.back{
+    
+    background-color: black;
+    height: 100vh;
+}
+
+.auth {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 40vh;
+  
+  
+}
+
+.auth button {
+    width: 200px;
+    height: 50px;
+    border: none;
+    background-color: rgb(137, 47, 47);
+    color: white;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+   
+}
+
+p{
+    padding-bottom: 40px;
+}
+

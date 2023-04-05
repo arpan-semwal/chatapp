@@ -1,11 +1,11 @@
 import Cookies from 'universal-cookie';
 import { useState  ,useRef} from 'react';
-import './App.css';
+import '../src/styles/App.css'
 import { Auth } from './components/Auth';
 import { Chat } from './components/Chat';
 import { signOut } from 'firebase/auth';
 import{auth} from './firebase';
-import "./styles/Chat.css";
+
 
 
 
@@ -36,22 +36,22 @@ function App() {
   }
 
   return (
-    <>
+    <div className='box'>
       {
       room ?( <Chat room = {room}
 
       />): 
     <div className='room'>
-    <label>enter room name:</label>
+    <label>Enter Room Name:</label>
     <input ref={roomInputRef}/>
-    <button onClick={() => setRoom(roomInputRef.current.value)}>enter Chat</button>
+    <button className='btn-1' onClick={() => setRoom(roomInputRef.current.value)}>Enter Chat</button>
     </div>
     } 
 
     <div className='sign-out'>
-      <button onClick={signUserOut}>Sign Out</button>
+      <button  className='btn-2' onClick={signUserOut}>Sign Out</button>
     </div>
-  </>
+  </div>
   );
 
 
